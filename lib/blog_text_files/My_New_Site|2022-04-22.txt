@@ -1,0 +1,8 @@
+Hello! Welcome to my website! Everything you see is created by me from scratch using Flutter web!
+
+I chose Flutter web over other frameworks for a few reasons:
+- Flutter's coding architecture is more intuitive to my understanding and recall
+- The design is the same as that of Flutter mobile
+- I can just focus on using the programming language for building the UI and application logic instead of trying to juggle with many different tools like css, scss, jquery, etc. to get the same job done
+
+These features are so handy that I have decided to try writing a blog (hence this first post). I will most likely write mainly about programming and programming-adjacent topics, but I may occasionally dip into other subjects if something catches my attention.
