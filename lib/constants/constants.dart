@@ -4,7 +4,7 @@ const double NAV_HEADER_FONT_SIZE = 18;
 const double BLOG_TEXT_FONT_SIZE = 18;
 const int CONTACT_MESSAGE_TIMEOUT_SECONDS = 60;
 Widget dummyWidget = Container(
-  child: Center(
+  child: const Center(
     child: Text(
       'PENDING',
       style: TextStyle(color: Colors.red),

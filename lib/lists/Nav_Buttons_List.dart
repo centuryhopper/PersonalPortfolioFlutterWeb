@@ -39,7 +39,7 @@ List<Widget> navButtons(BuildContext context) => [
           onPressed: () {
             showPopup(context,
                 widget: popupBody(
-                  body: AboutMeBody(aboutMe: ABOUT_ME),
+                  body: const AboutMeBody(aboutMe: ABOUT_ME),
                 ),
                 title: 'About Me');
           },
@@ -56,7 +56,7 @@ List<Widget> navButtons(BuildContext context) => [
           onPressed: () {
             showPopup(context,
                 widget: popupBody(
-                  body: SkillsBody(),
+                  body: const SkillsBody(),
                 ),
                 title: 'About Me');
           },
@@ -73,7 +73,7 @@ List<Widget> navButtons(BuildContext context) => [
           onPressed: () {
             showPopup(context,
                 widget: popupBody(
-                  body: Text('Pending'),
+                  body: const Text('Pending'),
                 ),
                 title: 'Games');
           },
@@ -90,7 +90,7 @@ List<Widget> navButtons(BuildContext context) => [
           onPressed: () {
             showPopup(context,
                 widget: popupBody(
-                  body: ContactMeBody(),
+                  body: const ContactMeBody(),
                 ),
                 title: 'Contact Me');
           },

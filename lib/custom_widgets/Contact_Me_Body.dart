@@ -1,9 +1,9 @@
-import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:personal_portfolio_flutter/Animations/On_Hover_Button.dart';
+import 'package:personal_portfolio_flutter/classes/portfolio_contact.dart';
 import 'package:personal_portfolio_flutter/constants/constants.dart';
+import 'package:http/http.dart' as http;
 
 class ContactMeBody extends StatefulWidget {
   const ContactMeBody({Key? key}) : super(key: key);
@@ -26,6 +26,9 @@ class _ContactMeBodyState extends State<ContactMeBody> {
 
   late FToast _fToast;
 
+  final endPoint =
+      'https://nodejs-portfolio-contacts.herokuapp.com/portfolio_contacts/';
+
   @override
   void initState() {
     super.initState();
@@ -43,37 +46,67 @@ class _ContactMeBodyState extends State<ContactMeBody> {
 
   @override
   Widget build(BuildContext context) {
-    Future sendEmail(
-        {required String name,
-        required String email,
-        required String subject,
-        required String message}) async {
-      // https://api.emailjs.com/api/v1.0/email/send
-      final serviceId = "service_3ljw4pe";
-      final templateId = "template_6ohympj";
-      final userId = "102oHsGTkdn0Y2wai";
+    // Future sendEmail(
+    //     {required String name,
+    //     required String email,
+    //     required String subject,
+    //     required String message}) async {
+    //   // https://api.emailjs.com/api/v1.0/email/send
+    //   const serviceId = "service_3ljw4pe";
+    //   const templateId = "template_6ohympj";
+    //   const userId = "102oHsGTkdn0Y2wai";
 
-      final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");
-      final response = await http.post(
-        url,
+    //   final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");
+    //   final response = await http.post(
+    //     url,
+    //     headers: {
+    //       // the origin key value pair is needed for android/ios version to work
+    //       'origin': 'http://localhost',
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: json.encode({
+    //       'service_id': serviceId,
+    //       'template_id': templateId,
+    //       'user_id': userId,
+    //       'template_params': {
+    //         'user_name': name,
+    //         'user_email': email,
+    //         'user_subject': subject,
+    //         'user_message': message,
+    //       }
+    //     }),
+    //   );
+    //   // print(response.body);
+    // }
+
+    Future<PortfolioContact?> sendToDB(
+      String name,
+      String email,
+      String subject,
+      String message,
+    ) async {
+
+      var response = await http.post(
+        Uri.parse(endPoint),
         headers: {
           // the origin key value pair is needed for android/ios version to work
           'origin': 'http://localhost',
           'Content-Type': 'application/json',
         },
-        body: json.encode({
-          'service_id': serviceId,
-          'template_id': templateId,
-          'user_id': userId,
-          'template_params': {
-            'user_name': name,
-            'user_email': email,
-            'user_subject': subject,
-            'user_message': message,
-          }
-        }),
+        body: contactModelToJson(PortfolioContact(
+            name: name, email: email, subject: subject, message: message)),
       );
-      print(response.body);
+
+      if (response.statusCode == 200) {
+        // If the server did return a 201 CREATED response,
+        // then parse the JSON.
+        // print(response.body);
+        return null;
+      } else {
+        // If the server did not return a 201 CREATED response,
+        // then throw an exception.
+        throw Exception('Failed to send data to the server');
+      }
     }
 
     Widget toast(
@@ -91,7 +124,7 @@ class _ContactMeBodyState extends State<ContactMeBody> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(iconData),
-              SizedBox(
+              const SizedBox(
                 width: 12.0,
               ),
               Text(
@@ -131,12 +164,15 @@ class _ContactMeBodyState extends State<ContactMeBody> {
         return;
       }
 
-      print("form submitted!");
+      // print("form submitted!");
       var name = controllerMap['name']?.text,
           email = controllerMap['email']?.text,
           subject = controllerMap['subject']?.text,
           message = controllerMap['message']?.text;
-      if (name!.isEmpty || email!.isEmpty || subject!.isEmpty || message!.isEmpty) {
+      if (name!.isEmpty ||
+          email!.isEmpty ||
+          subject!.isEmpty ||
+          message!.isEmpty) {
         _fToast.showToast(
           child: toast(
               iconData: Icons.error,
@@ -148,18 +184,20 @@ class _ContactMeBodyState extends State<ContactMeBody> {
         return;
       }
 
-      await sendEmail(
-          name: controllerMap['name']!.text,
-          email: controllerMap['email']!.text,
-          subject: controllerMap['subject']!.text,
-          message: controllerMap['message']!.text);
-      _fToast.showToast(
-        child: toast(
-            text:
-                "Thank you for your message! I will respond as soon as possible!"),
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: const Duration(seconds: 5),
-      );
+      await sendToDB(name, email, subject, message);
+
+      // await sendEmail(
+      //     name: controllerMap['name']!.text,
+      //     email: controllerMap['email']!.text,
+      //     subject: controllerMap['subject']!.text,
+      //     message: controllerMap['message']!.text);
+      // _fToast.showToast(
+      //   child: toast(
+      //       text:
+      //           "Thank you for your message! I will respond as soon as possible!"),
+      //   gravity: ToastGravity.BOTTOM,
+      //   toastDuration: const Duration(seconds: 5),
+      // );
 
       _didSubmit = true;
     }
@@ -169,7 +207,7 @@ class _ContactMeBodyState extends State<ContactMeBody> {
           left: 100.0, top: 32.0, right: 100, bottom: 32.0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Container(
-          child: Text(
+          child: const Text(
             "I am excited to meet and work with you because we progress better together! Please don't hesitate to contact me using the form below.",
             style: TextStyle(
                 color: Colors.white70,
@@ -177,7 +215,7 @@ class _ContactMeBodyState extends State<ContactMeBody> {
                 fontWeight: FontWeight.bold),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 50,
         ),
         Row(
@@ -186,20 +224,20 @@ class _ContactMeBodyState extends State<ContactMeBody> {
               child: TextField(
                 controller: controllerMap['name'],
                 autofocus: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: true,
                   hintText: "Name",
                   border: InputBorder.none,
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 25,
             ),
             Expanded(
               child: TextField(
                 controller: controllerMap['email'],
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: true,
                   hintText: "Email",
                   border: InputBorder.none,
@@ -208,41 +246,41 @@ class _ContactMeBodyState extends State<ContactMeBody> {
             ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 50,
         ),
         TextField(
           controller: controllerMap['subject'],
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             filled: true,
             hintText: "Subject",
             border: InputBorder.none,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 50,
         ),
         TextField(
           controller: controllerMap['message'],
           maxLines: 7,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             filled: true,
             hintText: "Message",
             border: InputBorder.none,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 50,
         ),
         OnHoverButton(
           child: MaterialButton(
               height: 60.0,
               minWidth: double.infinity,
-              color: Color(0xff333333),
+              color: const Color(0xff333333),
               onPressed: () {
                 trySubmit();
               },
-              child: Text(
+              child: const Text(
                 "SUBMIT",
                 style:
                     TextStyle(fontWeight: FontWeight.bold, color: Colors.white),

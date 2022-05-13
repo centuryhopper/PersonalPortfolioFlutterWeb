@@ -6,7 +6,6 @@ import 'package:personal_portfolio_flutter/classes/App_Routes.dart';
 import 'package:personal_portfolio_flutter/classes/Blog_Card_Contents.dart';
 import 'package:personal_portfolio_flutter/custom_widgets/Blog_Card.dart';
 
-
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -53,8 +52,8 @@ class RouteGenerator {
           settings: settings,
           pageBuilder: (context, animation, _) {
             return BlogDetails(
-              title: arguments?.title ?? "ERROR",
-              content: arguments?.contents ?? "ERROR",
+              title: arguments.title ?? "ERROR",
+              content: arguments.contents ?? "ERROR",
             );
           },
         );
@@ -68,9 +67,9 @@ class RouteGenerator {
     return MaterialPageRoute(builder: (_) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Error'),
+          title: const Text('Error'),
         ),
-        body: Center(child: Text('ERROR')),
+        body: const Center(child: Text('ERROR')),
       );
     });
   }
