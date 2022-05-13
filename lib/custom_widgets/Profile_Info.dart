@@ -10,7 +10,6 @@ import 'dart:html' as html;
 
 import 'package:personal_portfolio_flutter/responsive_widget.dart';
 
-
 // TODO: Make profile data column media queries repsonsive
 
 Column profileData(BuildContext context) => Column(
@@ -19,35 +18,40 @@ Column profileData(BuildContext context) => Column(
           ? CrossAxisAlignment.center
           : CrossAxisAlignment.start,
       children: <Widget>[
-        TypewriterAnimatedTextKit(
-          speed: const Duration(milliseconds: 250),
-          text: [
-            "Hi there! My name is",
+        AnimatedTextKit(
+          animatedTexts: [
+            TypewriterAnimatedText(
+              'Hello world!',
+              textStyle: const TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
+              ),
+              textAlign: TextAlign.start,
+              speed: const Duration(milliseconds: 250),
+            ),
           ],
-          textStyle: TextStyle(
-            fontSize: 30.0,
-            color: Colors.orange,
-          ),
-          textAlign: TextAlign.start,
           pause: const Duration(milliseconds: 1500),
         ),
         SizedBox(
           width: 250,
-          child: TypewriterAnimatedTextKit(
-            speed: const Duration(milliseconds: 500),
-            text: [
-              "Leo\nZhang",
+          child: AnimatedTextKit(
+            animatedTexts: [
+              TypewriterAnimatedText(
+                "Leo\nZhang",
+                textStyle: const TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.start,
+                speed: const Duration(milliseconds: 500),
+              ),
             ],
-            textStyle: TextStyle(
-              fontSize: 30.0,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.start,
             pause: const Duration(milliseconds: 1250),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         OnHoverText(
@@ -61,51 +65,58 @@ Column profileData(BuildContext context) => Column(
             );
           },
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             OnHoverButton(
-              child: RaisedButton(
-                shape: StadiumBorder(),
-                child: Text('Résumé'),
-                color: Colors.cyan,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.cyan,
+                  shape: const StadiumBorder(),
+                  padding: const EdgeInsets.all(10),
+                ),
+                child: const Text('Résumé'),
                 onPressed: () {
                   html.window.open(
                       'https://drive.google.com/file/d/1k-oVcUm6TwIEY6b8X_qwoeKipRF14SzW/view?usp=sharing',
                       'resume');
                 },
-                padding: EdgeInsets.all(10),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             OnHoverButton(
-              child: OutlineButton(
-                borderSide: BorderSide(
-                  color: Colors.cyanAccent,
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  primary: Colors.red,
+                  side: const BorderSide(
+                    color: Colors.cyanAccent,
+                  ),
+                  shape: const StadiumBorder(),
+                  padding: const EdgeInsets.all(10),
                 ),
-                shape: StadiumBorder(),
-                child: Text('Say Hi!'),
-                color: Colors.red,
+                child: const Text('Say Hi!'),
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('My Email:'),
-                        content: SelectableText(
+                        title: const Text('My Email:'),
+                        content: const SelectableText(
                             'leoucfstudent@knights.ucf.edu\nor\nleo1997.work@gmail.com'),
                         actions: <Widget>[
-                          FlatButton(
-                            textColor: Colors.black,
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              primary: Colors.black,
+                            ),
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text(
+                            child: const Text(
                               'OK',
                               style: TextStyle(color: Colors.white),
                             ),
@@ -115,7 +126,6 @@ Column profileData(BuildContext context) => Column(
                     },
                   );
                 },
-                padding: EdgeInsets.all(10),
               ),
             )
           ],
@@ -139,7 +149,7 @@ class LargeScreenProfileInfo extends StatelessWidget {
           children: <Widget>[
             Column(
               children: [
-                OnHoverProfileImage(),
+                const OnHoverProfileImage(),
                 Container(
                   child: OnHoverText(
                     builder: (bool amIHovering) {
@@ -184,7 +194,7 @@ class MediumScreenProfileInfo extends StatelessWidget {
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.1,
         ),
-        OnHoverProfileImage(),
+        const OnHoverProfileImage(),
         Container(
           child: OnHoverText(
             builder: (bool amIHovering) {
@@ -223,7 +233,7 @@ class SmallScreenProfileInfo extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        OnHoverProfileImage(),
+        const OnHoverProfileImage(),
         Container(
           child: OnHoverText(
             builder: (bool amIHovering) {
@@ -255,5 +265,3 @@ class SmallScreenProfileInfo extends StatelessWidget {
     );
   }
 }
-
-
