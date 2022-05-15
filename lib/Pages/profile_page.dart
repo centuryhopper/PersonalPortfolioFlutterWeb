@@ -10,7 +10,7 @@ class ProfilePage extends StatelessWidget {
     return BasePage(
       largeScreenWidget: LargeScreenProfileInfo(),
       mediumScreenWidget: MediumScreenProfileInfo(),
-      smallScreenWidget: SmallScreenProfileInfo(),
+      smallScreenWidget: const SmallScreenProfileInfo(),
     );
   }
 }

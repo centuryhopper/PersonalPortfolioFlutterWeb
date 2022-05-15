@@ -58,7 +58,7 @@ Column profileData(BuildContext context) => Column(
           builder: (bool amIHovering) {
             return SelectableText(
               'I am currently seeking a job/internship for anything\n'
-              'related to programming and problem solving!',
+              'related to computer programming and problem solving!',
               textScaleFactor: 1.5,
               style: TextStyle(
                   color: amIHovering ? Colors.orange : Colors.white70),

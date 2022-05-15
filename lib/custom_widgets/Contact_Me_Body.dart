@@ -79,13 +79,12 @@ class _ContactMeBodyState extends State<ContactMeBody> {
     //   // print(response.body);
     // }
 
-    Future<PortfolioContact?> sendToDB(
+    Future<String?> sendToDB(
       String name,
       String email,
       String subject,
       String message,
     ) async {
-
       var response = await http.post(
         Uri.parse(endPoint),
         headers: {
@@ -100,8 +99,8 @@ class _ContactMeBodyState extends State<ContactMeBody> {
       if (response.statusCode == 200) {
         // If the server did return a 201 CREATED response,
         // then parse the JSON.
-        // print(response.body);
-        return null;
+        print(response.body);
+        return response.body;
       } else {
         // If the server did not return a 201 CREATED response,
         // then throw an exception.
@@ -184,22 +183,33 @@ class _ContactMeBodyState extends State<ContactMeBody> {
         return;
       }
 
-      await sendToDB(name, email, subject, message);
+      _didSubmit = true;
+      String? res = await sendToDB(name, email, subject, message);
+      if (res == 'saved a contact\'s information into the database!') {
+        // show to the client that his/her message has been sent
+        _fToast.showToast(
+          child: toast(
+              text:
+                  "Thank you for your message! I will respond as soon as possible!"),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: const Duration(seconds: 5),
+        );
+      } else {
+        _fToast.showToast(
+          child: toast(
+              iconData: Icons.error,
+              backgroundColor: Colors.redAccent,
+              text: "Failed to send message. Please try again later."),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: const Duration(seconds: 5),
+        );
+      }
 
       // await sendEmail(
       //     name: controllerMap['name']!.text,
       //     email: controllerMap['email']!.text,
       //     subject: controllerMap['subject']!.text,
       //     message: controllerMap['message']!.text);
-      // _fToast.showToast(
-      //   child: toast(
-      //       text:
-      //           "Thank you for your message! I will respond as soon as possible!"),
-      //   gravity: ToastGravity.BOTTOM,
-      //   toastDuration: const Duration(seconds: 5),
-      // );
-
-      _didSubmit = true;
     }
 
     return Padding(
